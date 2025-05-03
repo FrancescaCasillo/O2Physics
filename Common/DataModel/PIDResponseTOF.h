@@ -275,42 +275,42 @@ namespace pidtof
 {
 // Expected signals
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalEl, tofExpSignalEl, //! Expected time for electron
-                           [](float nsigma, float sigma, float tofsignal) -> float { return tofsignal - nsigma * sigma; });
+                           [](float nsigma, float sigma, float tofsignal) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : tofsignal - nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalMu, tofExpSignalMu, //! Expected time for muon
-                           [](float nsigma, float sigma, float tofsignal) -> float { return tofsignal - nsigma * sigma; });
+                           [](float nsigma, float sigma, float tofsignal) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : tofsignal - nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalPi, tofExpSignalPi, //! Expected time for pion
-                           [](float nsigma, float sigma, float tofsignal) -> float { return tofsignal - nsigma * sigma; });
+                           [](float nsigma, float sigma, float tofsignal) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : tofsignal - nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalKa, tofExpSignalKa, //! Expected time for kaon
-                           [](float nsigma, float sigma, float tofsignal) -> float { return tofsignal - nsigma * sigma; });
+                           [](float nsigma, float sigma, float tofsignal) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : tofsignal - nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalPr, tofExpSignalPr, //! Expected time for proton
-                           [](float nsigma, float sigma, float tofsignal) -> float { return tofsignal - nsigma * sigma; });
+                           [](float nsigma, float sigma, float tofsignal) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : tofsignal - nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalDe, tofExpSignalDe, //! Expected time for deuteron
-                           [](float nsigma, float sigma, float tofsignal) -> float { return tofsignal - nsigma * sigma; });
+                           [](float nsigma, float sigma, float tofsignal) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : tofsignal - nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalTr, tofExpSignalTr, //! Expected time for triton
-                           [](float nsigma, float sigma, float tofsignal) -> float { return tofsignal - nsigma * sigma; });
+                           [](float nsigma, float sigma, float tofsignal) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : tofsignal - nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalHe, tofExpSignalHe, //! Expected time for helium3
-                           [](float nsigma, float sigma, float tofsignal) -> float { return tofsignal - nsigma * sigma; });
+                           [](float nsigma, float sigma, float tofsignal) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : tofsignal - nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalAl, tofExpSignalAl, //! Expected time for alpha
-                           [](float nsigma, float sigma, float tofsignal) -> float { return tofsignal - nsigma * sigma; });
+                           [](float nsigma, float sigma, float tofsignal) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : tofsignal - nsigma * sigma; });
 // Delta with respect to signal
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalDiffEl, tofExpSignalDiffEl, //! Difference between signal and expected for electron
-                           [](float nsigma, float sigma) -> float { return nsigma * sigma; });
+                           [](float nsigma, float sigma) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalDiffMu, tofExpSignalDiffMu, //! Difference between signal and expected for muon
-                           [](float nsigma, float sigma) -> float { return nsigma * sigma; });
+                           [](float nsigma, float sigma) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalDiffPi, tofExpSignalDiffPi, //! Difference between signal and expected for pion
-                           [](float nsigma, float sigma) -> float { return nsigma * sigma; });
+                           [](float nsigma, float sigma) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalDiffKa, tofExpSignalDiffKa, //! Difference between signal and expected for kaon
-                           [](float nsigma, float sigma) -> float { return nsigma * sigma; });
+                           [](float nsigma, float sigma) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalDiffPr, tofExpSignalDiffPr, //! Difference between signal and expected for proton
-                           [](float nsigma, float sigma) -> float { return nsigma * sigma; });
+                           [](float nsigma, float sigma) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalDiffDe, tofExpSignalDiffDe, //! Difference between signal and expected for deuteron
-                           [](float nsigma, float sigma) -> float { return nsigma * sigma; });
+                           [](float nsigma, float sigma) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalDiffTr, tofExpSignalDiffTr, //! Difference between signal and expected for triton
-                           [](float nsigma, float sigma) -> float { return nsigma * sigma; });
+                           [](float nsigma, float sigma) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalDiffHe, tofExpSignalDiffHe, //! Difference between signal and expected for helium3
-                           [](float nsigma, float sigma) -> float { return nsigma * sigma; });
+                           [](float nsigma, float sigma) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : nsigma * sigma; });
 DECLARE_SOA_DYNAMIC_COLUMN(TOFExpSignalDiffAl, tofExpSignalDiffAl, //! Difference between signal and expected for alpha
-                           [](float nsigma, float sigma) -> float { return nsigma * sigma; });
+                           [](float nsigma, float sigma) -> float { return sigma <= 0.f ? o2::pid::tof::defaultReturnValue : nsigma * sigma; });
 // Expected sigma
 DECLARE_SOA_COLUMN(TOFExpSigmaEl, tofExpSigmaEl, float); //! Expected resolution with the TOF detector for electron
 DECLARE_SOA_COLUMN(TOFExpSigmaMu, tofExpSigmaMu, float); //! Expected resolution with the TOF detector for muon

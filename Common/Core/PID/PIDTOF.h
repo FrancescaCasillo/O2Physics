@@ -290,6 +290,7 @@ class TOFResoParamsV3 : public o2::tof::Parameters<13>
   template <o2::track::PID::ID pid>
   float getResolution(const float p, const float eta) const
   {
+    // LOG(info) << "Get resolution for " << particleNames[pid] << " with p " << p << " and eta " << eta;
     return mResolution[pid]->Eval(p, eta);
   }
 
@@ -488,7 +489,7 @@ class ExpTimes
     const float& mom = track.p();
     const float& etaTrack = track.eta();
     if (mom <= 0) {
-      return -999.f;
+      return -12345.f;
     }
     const float reso = parameters.template getResolution<id>(mom, etaTrack);
     if (reso > 0) {
@@ -537,7 +538,7 @@ class ExpTimes
   template <typename ParamType>
   static float GetSeparation(const ParamType& parameters, const TrackType& track, const float collisionTime, const float resolution)
   {
-    return track.hasTOF() ? (track.tofSignal() - collisionTime - GetCorrectedExpectedSignal(parameters, track)) / resolution : defaultReturnValue;
+    return (track.hasTOF() && track.tofSignal() > 0.f) ? (track.tofSignal() - collisionTime - GetCorrectedExpectedSignal(parameters, track)) / resolution : defaultReturnValue;
   }
 
   /// Gets the number of sigmas with respect the expected time
