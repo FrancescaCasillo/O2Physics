@@ -554,15 +554,15 @@ struct tofPidQaImp {
   void process2(TrkPID const& tracks, aod::Collisions const&)
   {
     auto tracksWithPid = soa::Attach<TrkPID,
-                                     o2::aod::TOFExpSigma2El, o2::aod::TOFNSigma2El,
-                                     o2::aod::TOFExpSigma2Mu, o2::aod::TOFNSigma2Mu,
-                                     o2::aod::TOFExpSigma2Pi, o2::aod::TOFNSigma2Pi,
-                                     o2::aod::TOFExpSigma2Ka, o2::aod::TOFNSigma2Ka,
-                                     o2::aod::TOFExpSigma2Pr, o2::aod::TOFNSigma2Pr,
-                                     o2::aod::TOFExpSigma2De, o2::aod::TOFNSigma2De,
-                                     o2::aod::TOFExpSigma2Tr, o2::aod::TOFNSigma2Tr,
-                                     o2::aod::TOFExpSigma2He, o2::aod::TOFNSigma2He,
-                                     o2::aod::TOFExpSigma2Al, o2::aod::TOFNSigma2Al,
+                                     o2::aod::TOFExpSigmaDynEl, o2::aod::TOFNSigmaDynEl,
+                                     o2::aod::TOFExpSigmaDynMu, o2::aod::TOFNSigmaDynMu,
+                                     o2::aod::TOFExpSigmaDynPi, o2::aod::TOFNSigmaDynPi,
+                                     o2::aod::TOFExpSigmaDynKa, o2::aod::TOFNSigmaDynKa,
+                                     o2::aod::TOFExpSigmaDynPr, o2::aod::TOFNSigmaDynPr,
+                                     o2::aod::TOFExpSigmaDynDe, o2::aod::TOFNSigmaDynDe,
+                                     o2::aod::TOFExpSigmaDynTr, o2::aod::TOFNSigmaDynTr,
+                                     o2::aod::TOFExpSigmaDynHe, o2::aod::TOFNSigmaDynHe,
+                                     o2::aod::TOFExpSigmaDynAl, o2::aod::TOFNSigmaDynAl,
                                      o2::aod::TOFBeta, o2::aod::TOFMass>(tracks);
     if (tracks.size() != tracksWithPid.size()) {
       LOG(fatal) << "Mismatch in track table size!" << tracks.size() << " vs " << tracksWithPid.size();
@@ -587,12 +587,12 @@ struct tofPidQaImp {
 
       const float nsigmaEl = o2::pid::tof::ExpTimes<TrkPID::iterator, 0>::GetSeparation(tofResponse->parameters, trk);
 
-      // LOG(info) << "nsigma " << nsigma << " nsigmaEl " << nsigmaEl << " t.tofNSigmaEl() " << t.tofNSigmaEl() << " t.tofNSigma2El() " << t.tofNSigma2El();
+      // LOG(info) << "nsigma " << nsigma << " nsigmaEl " << nsigmaEl << " t.tofNSigmaEl() " << t.tofNSigmaEl() << " t.tofNSigmaDynEl() " << t.tofNSigmaDynEl();
       // LOG(info) << "Offset for eta " << t.eta() << " and sign " << t.sign() << " is " << offset;
       const float expEl = o2::pid::tof::ExpTimes<TrkPID::iterator, PID::Electron>::GetCorrectedExpectedSignal(tofResponse->parameters, trk);
-      if (std::abs(t.tofNSigmaEl() - t.tofNSigma2El()) > 1e-1f) {
+      if (std::abs(t.tofNSigmaEl() - t.tofNSigmaDynEl()) > 1e-1f) {
         constexpr auto responseEl = o2::pid::tof::ExpTimes<TrkPID::iterator, PID::Electron>();
-        LOG(warning) << " t.tofNSigmaEl() " << t.tofNSigmaEl() << " t.tofNSigma2El() " << t.tofNSigma2El();
+        LOG(warning) << " t.tofNSigmaEl() " << t.tofNSigmaEl() << " t.tofNSigmaDynEl() " << t.tofNSigmaDynEl();
         LOG(warning) << "      t.tofExpSignalEl(t.tofSignal() - t.tofEvTime()) " << t.tofExpSignalEl(t.tofSignal() - t.tofEvTime()) << " t.tofExpTimeEl() " << t.tofExpTimeEl();
         LOG(warning) << "      responseEl.GetExpectedSigma(tofResponse->parameters, t) " << responseEl.GetExpectedSigma(tofResponse->parameters, trk);
         LOG(warning) << "      t.tofExpSigmaEl() " << t.tofExpSigmaEl() << " t.tofExpSigmaDynEl() " << t.tofExpSigmaDynEl();
@@ -602,47 +602,47 @@ struct tofPidQaImp {
       histos.fill(HIST("check/El/reso"), t.tofExpSigmaEl() - t.tofExpSigmaDynEl());
       histos.fill(HIST("check/El/exp"), t.tofExpSignalEl(t.tofSignal() - t.tofEvTime()) - t.tofExpTimeEl() - offset);
       histos.fill(HIST("check/El/delta"), t.tofExpSignalDiffEl() + t.tofExpTimeEl() - t.tofSignal() + t.tofEvTime());
-      histos.fill(HIST("check/El/nsigma"), t.tofNSigmaEl() - t.tofNSigma2El());
+      histos.fill(HIST("check/El/nsigma"), t.tofNSigmaEl() - t.tofNSigmaDynEl());
 
       histos.fill(HIST("check/Mu/reso"), t.tofExpSigmaMu() - t.tofExpSigmaDynMu());
       histos.fill(HIST("check/Mu/exp"), t.tofExpSignalMu(t.tofSignal() - t.tofEvTime()) - t.tofExpTimeMu() - offset);
       histos.fill(HIST("check/Mu/delta"), t.tofExpSignalDiffMu() + t.tofExpTimeMu() - t.tofSignal() + t.tofEvTime());
-      histos.fill(HIST("check/Mu/nsigma"), t.tofNSigmaMu() - t.tofNSigma2Mu());
+      histos.fill(HIST("check/Mu/nsigma"), t.tofNSigmaMu() - t.tofNSigmaDynMu());
 
       histos.fill(HIST("check/Pi/reso"), t.tofExpSigmaPi() - t.tofExpSigmaDynPi());
       histos.fill(HIST("check/Pi/exp"), t.tofExpSignalPi(t.tofSignal() - t.tofEvTime()) - t.tofExpTimePi() - offset);
       histos.fill(HIST("check/Pi/delta"), t.tofExpSignalDiffPi() + t.tofExpTimePi() - t.tofSignal() + t.tofEvTime());
-      histos.fill(HIST("check/Pi/nsigma"), t.tofNSigmaPi() - t.tofNSigma2Pi());
+      histos.fill(HIST("check/Pi/nsigma"), t.tofNSigmaPi() - t.tofNSigmaDynPi());
 
       histos.fill(HIST("check/Ka/reso"), t.tofExpSigmaKa() - t.tofExpSigmaDynKa());
       histos.fill(HIST("check/Ka/exp"), t.tofExpSignalKa(t.tofSignal() - t.tofEvTime()) - t.tofExpTimeKa() - offset);
       histos.fill(HIST("check/Ka/delta"), t.tofExpSignalDiffKa() + t.tofExpTimeKa() - t.tofSignal() + t.tofEvTime());
-      histos.fill(HIST("check/Ka/nsigma"), t.tofNSigmaKa() - t.tofNSigma2Ka());
+      histos.fill(HIST("check/Ka/nsigma"), t.tofNSigmaKa() - t.tofNSigmaDynKa());
 
       histos.fill(HIST("check/Pr/reso"), t.tofExpSigmaPr() - t.tofExpSigmaDynPr());
       histos.fill(HIST("check/Pr/exp"), t.tofExpSignalPr(t.tofSignal() - t.tofEvTime()) - t.tofExpTimePr() - offset);
       histos.fill(HIST("check/Pr/delta"), t.tofExpSignalDiffPr() + t.tofExpTimePr() - t.tofSignal() + t.tofEvTime());
-      histos.fill(HIST("check/Pr/nsigma"), t.tofNSigmaPr() - t.tofNSigma2Pr());
+      histos.fill(HIST("check/Pr/nsigma"), t.tofNSigmaPr() - t.tofNSigmaDynPr());
 
       histos.fill(HIST("check/De/reso"), t.tofExpSigmaDe() - t.tofExpSigmaDynDe());
       histos.fill(HIST("check/De/exp"), t.tofExpSignalDe(t.tofSignal() - t.tofEvTime()) - t.tofExpTimeDe() - offset);
       histos.fill(HIST("check/De/delta"), t.tofExpSignalDiffDe() + t.tofExpTimeDe() - t.tofSignal() + t.tofEvTime());
-      histos.fill(HIST("check/De/nsigma"), t.tofNSigmaDe() - t.tofNSigma2De());
+      histos.fill(HIST("check/De/nsigma"), t.tofNSigmaDe() - t.tofNSigmaDynDe());
 
       histos.fill(HIST("check/Tr/reso"), t.tofExpSigmaTr() - t.tofExpSigmaDynTr());
       histos.fill(HIST("check/Tr/exp"), t.tofExpSignalTr(t.tofSignal() - t.tofEvTime()) - t.tofExpTimeTr() - offset);
       histos.fill(HIST("check/Tr/delta"), t.tofExpSignalDiffTr() + t.tofExpTimeTr() - t.tofSignal() + t.tofEvTime());
-      histos.fill(HIST("check/Tr/nsigma"), t.tofNSigmaTr() - t.tofNSigma2Tr());
+      histos.fill(HIST("check/Tr/nsigma"), t.tofNSigmaTr() - t.tofNSigmaDynTr());
 
       histos.fill(HIST("check/He/reso"), t.tofExpSigmaHe() - t.tofExpSigmaDynHe());
       histos.fill(HIST("check/He/exp"), t.tofExpSignalHe(t.tofSignal() - t.tofEvTime()) - t.tofExpTimeHe() - offset);
       histos.fill(HIST("check/He/delta"), t.tofExpSignalDiffHe() + t.tofExpTimeHe() - t.tofSignal() + t.tofEvTime());
-      histos.fill(HIST("check/He/nsigma"), t.tofNSigmaHe() - t.tofNSigma2He());
+      histos.fill(HIST("check/He/nsigma"), t.tofNSigmaHe() - t.tofNSigmaDynHe());
 
       histos.fill(HIST("check/Al/reso"), t.tofExpSigmaAl() - t.tofExpSigmaDynAl());
       histos.fill(HIST("check/Al/exp"), t.tofExpSignalAl(t.tofSignal() - t.tofEvTime()) - t.tofExpTimeAl() - offset);
       histos.fill(HIST("check/Al/delta"), t.tofExpSignalDiffAl() + t.tofExpTimeAl() - t.tofSignal() + t.tofEvTime());
-      histos.fill(HIST("check/Al/nsigma"), t.tofNSigmaAl() - t.tofNSigma2Al());
+      histos.fill(HIST("check/Al/nsigma"), t.tofNSigmaAl() - t.tofNSigmaDynAl());
     }
   }
   PROCESS_SWITCH(tofPidQaImp, process2, "YYes", true);
@@ -778,22 +778,22 @@ struct tofPidQaImp {
     auto tracksWithPid = soa::Attach<TrackCandidates, inputPid>(tracks);          \
     LOG(info) << "Runningnnnnnnnnnnnnnnnnnnnnnn " << #asd;                        \
     for (const auto& t : tracksWithPid) {                                         \
-      LOG(info) << t.tofExpSigmaDyn##asd();                                         \
+      LOG(info) << t.tofExpSigmaDyn##asd();                                       \
     }                                                                             \
     collision.posZ();                                                             \
     /*processSingleParticle<PID::particleId, false>(collision, tracksWithPid); */ \
   }                                                                               \
   PROCESS_SWITCH(tofPidQaImp, process##particleId, Form("Process for the %s hypothesis for TOF NSigma QA", #particleId), false);
 
-  makeProcessFunction(aod::TOFExpSigma2El, Electron, El);
-  makeProcessFunction(aod::TOFExpSigma2Mu, Muon, Mu);
-  makeProcessFunction(aod::TOFExpSigma2Pi, Pion, Pi);
-  makeProcessFunction(aod::TOFExpSigma2Ka, Kaon, Ka);
-  makeProcessFunction(aod::TOFExpSigma2Pr, Proton, Pr);
-  makeProcessFunction(aod::TOFExpSigma2De, Deuteron, De);
-  makeProcessFunction(aod::TOFExpSigma2Tr, Triton, Tr);
-  makeProcessFunction(aod::TOFExpSigma2He, Helium3, He);
-  makeProcessFunction(aod::TOFExpSigma2Al, Alpha, Al);
+  makeProcessFunction(aod::TOFExpSigmaDynEl, Electron, El);
+  makeProcessFunction(aod::TOFExpSigmaDynMu, Muon, Mu);
+  makeProcessFunction(aod::TOFExpSigmaDynPi, Pion, Pi);
+  makeProcessFunction(aod::TOFExpSigmaDynKa, Kaon, Ka);
+  makeProcessFunction(aod::TOFExpSigmaDynPr, Proton, Pr);
+  makeProcessFunction(aod::TOFExpSigmaDynDe, Deuteron, De);
+  makeProcessFunction(aod::TOFExpSigmaDynTr, Triton, Tr);
+  makeProcessFunction(aod::TOFExpSigmaDynHe, Helium3, He);
+  makeProcessFunction(aod::TOFExpSigmaDynAl, Alpha, Al);
   // makeProcessFunction(aod::TOFNSigmaEl, Electron, El);
   // makeProcessFunction(aod::TOFNSigmaMu, Muon, Mu);
   // makeProcessFunction(aod::TOFNSigmaPi, Pion, Pi);
